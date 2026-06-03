@@ -110,4 +110,6 @@ class THelperFunctions {
     }
     return wrappedList;
   }
+
+  static Object? isDark(BuildContext context) {}
 }
