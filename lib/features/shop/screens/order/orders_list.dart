@@ -71,7 +71,7 @@ class TOrderListItems extends StatelessWidget {
                   child: Row(
                     children: [
                       /// 1 - Icon
-                      Icon(Iconsax.ship),
+                      Icon(Iconsax.tag),
                       SizedBox(width: TSizes.spaceBtwItems / 2),
 
                       /// 2 Status & Date

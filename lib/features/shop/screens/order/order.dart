@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/appbar/appbar.dart';
-import 'package:flutter_firebase_ecommerce_app/features/shop/order/orders_list.dart';
+import 'package:flutter_firebase_ecommerce_app/features/shop/screens/order/orders_list.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 
 class OrderScreen extends StatelessWidget {

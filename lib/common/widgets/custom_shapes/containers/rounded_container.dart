@@ -14,6 +14,8 @@ class TRoundedContainer extends StatelessWidget {
     this.radius = TSizes.cardRadiusLg,
     this.backgroundColor = TColors.white,
     this.borderColor = TColors.grey,
+    this.imageUrl,
+    this.applyImageRadius = false,
   });
 
   final double? width;
@@ -25,6 +27,8 @@ class TRoundedContainer extends StatelessWidget {
   final Color backgroundColor;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final String? imageUrl;
+  final bool applyImageRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +38,15 @@ class TRoundedContainer extends StatelessWidget {
       padding: padding,
       margin: margin,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: imageUrl == null ? backgroundColor : null,
         borderRadius: BorderRadius.circular(radius),
         border: showBorder ? Border.all(color: borderColor) : null,
+        image: imageUrl != null
+            ? DecorationImage(
+                image: AssetImage(imageUrl!),
+                fit: BoxFit.cover,
+              )
+            : null,
       ),
       child: child,
     );

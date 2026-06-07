@@ -56,7 +56,7 @@ class TProductCardVertical extends StatelessWidget {
                   ),
 
                   /// --Sales Tag
-                  /// 
+                  
                   Positioned(
                     top: 12,
                     child: TRoundedContainer(
@@ -117,6 +117,9 @@ class TProductCardVertical extends StatelessWidget {
                     isLarge: true,
                   ),
                 ),
+                
+                /// Add to cart
+                
                 Container(
                   decoration: const BoxDecoration(
                     color: TColors.dark,
