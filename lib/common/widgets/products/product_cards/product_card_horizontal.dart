@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ecommerce_app/common/styles/shadows.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/icons/t_circular_icon.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/images/t_rounded_image.dart';
