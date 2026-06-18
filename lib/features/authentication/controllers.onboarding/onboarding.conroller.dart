@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_ecommerce_app/features/authentication/screens/login/login.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
@@ -26,6 +27,8 @@ class OnBoardingController extends GetxController {
   /// Update Current Index & jump to next page
   void nextPage() {
     if (currentPageIndex.value == 2) {
+      final storage = GetStorage();
+      storage.write("IsFirstTime", false);
       Get.offAll(const LoginScreen());
     } else {
       final page = currentPageIndex.value + 1;
@@ -39,10 +42,8 @@ class OnBoardingController extends GetxController {
 
   /// Update Current Index & jump to the last Page
   void skipPage() {
-  Get.offAll(const LoginScreen());
-}
-
-    
+    Get.offAll(const LoginScreen());
+  }
 
   @override
   void onClose() {

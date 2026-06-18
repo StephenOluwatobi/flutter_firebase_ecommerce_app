@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
@@ -60,13 +57,14 @@ class DefaultFirebaseOptions {
     projectId: 'ecommerceapp-7af6c',
     storageBucket: 'ecommerceapp-7af6c.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBL5ruphMoHgGRS7hoopBlLH-bHx0a4UTo',
     appId: '1:737404799154:ios:312a201d6bc29fdbcf21ab',
     messagingSenderId: '737404799154',
     projectId: 'ecommerceapp-7af6c',
     storageBucket: 'ecommerceapp-7af6c.firebasestorage.app',
+    androidClientId: '737404799154-7a3ons6vpl8bonpgmm13qkgoe2a2o8d5.apps.googleusercontent.com',
+    iosClientId: '737404799154-odl4mtuuqcp35ij2jv6khob8rf22bdf6.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterFirebaseEcommerceApp',
   );
 
@@ -78,5 +76,15 @@ class DefaultFirebaseOptions {
     authDomain: 'ecommerceapp-7af6c.firebaseapp.com',
     storageBucket: 'ecommerceapp-7af6c.firebasestorage.app',
     measurementId: 'G-NBFR8RZ568',
+  );
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBL5ruphMoHgGRS7hoopBlLH-bHx0a4UTo',
+    appId: '1:737404799154:ios:312a201d6bc29fdbcf21ab',
+    messagingSenderId: '737404799154',
+    projectId: 'ecommerceapp-7af6c',
+    storageBucket: 'ecommerceapp-7af6c.firebasestorage.app',
+    androidClientId: '737404799154-7a3ons6vpl8bonpgmm13qkgoe2a2o8d5.apps.googleusercontent.com',
+    iosClientId: '737404799154-odl4mtuuqcp35ij2jv6khob8rf22bdf6.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterFirebaseEcommerceApp',
   );
 }
