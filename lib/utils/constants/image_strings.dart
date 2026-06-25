@@ -32,6 +32,12 @@ class TImages {
   static const String verifyIllustration =
       "assets/images/animations/sammy-line-travel-backpack-with-passport-and-air-ticket.gif";
 
+  /// Lottie Animations
+  static const String LottieAnimation1 =
+      "assets/lottie/liquid_loader_01.json";
+  static const String LottieAnimation2 =
+      "assets/lottie/Happy_Character_Throwing_Ball.json";
+
   // -- Category Icons
   static const String sportIcon =
       "assets/icons/categories/icons8-bowling-64.png";

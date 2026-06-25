@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_ecommerce_app/bindings/general_bindings.dart';
 
 import 'package:flutter_firebase_ecommerce_app/utils/constants/colors.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/theme/theme.dart';
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
+      initialBinding: GeneralBindings(),
 
       /// Show Loader or Circular Progress Indicator meanwhile Authentication Repository is deciding to show relevant screen
       home: const Scaffold(
