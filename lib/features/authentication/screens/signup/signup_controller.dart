@@ -24,16 +24,18 @@ class SignupController extends GetxController {
 
   Future<void> signup() async {
     try {
+      // Start Loading
       TFullScreenLoader.openLoadingDialog(
         'We are processing your information',
         TImages.LottieAnimation2,
       );
-
+      // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) return;
-
+      // Check Form Validation
       if (!signupFormKey.currentState!.validate()) return;
 
+      // Privacy Policy
       if (!privacyPolicy.value) {
         TLoaders.warningSnackBar(
           title: 'Accept Privacy Policy',
@@ -62,14 +64,21 @@ class SignupController extends GetxController {
       final userRepository = Get.put(UserRepository());
       await userRepository.saveUserRecord(newUser);
 
+      await AuthenticationRepository.instance.sendEmailVerification();
+
+      TFullScreenLoader.stopLoading();
+
       TLoaders.successSnackBar(
         title: 'Congratulations',
         message:
             'Your account has been created. Verify email to continue.',
       );
 
-      Get.to(() => const VerifyEmailScreen());
+      // Move to verify email screen
+      Get.to(() => VerifyEmailScreen(email: email.text.trim()));
     } catch (e) {
+      TFullScreenLoader.stopLoading();
+      // Show some Generic Error to the user
       TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }

@@ -37,6 +37,7 @@ class TImages {
       "assets/lottie/liquid_loader_01.json";
   static const String LottieAnimation2 =
       "assets/lottie/Happy_Character_Throwing_Ball.json";
+      static const String LottieAnimation3 = "assets/lottie/success_blue.json";
 
   // -- Category Icons
   static const String sportIcon =

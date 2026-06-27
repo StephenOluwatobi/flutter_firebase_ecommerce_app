@@ -21,22 +21,16 @@ class TColors {
   static const Color black = Colors.black;
   // Background Container Colors
   static const Color lightContainer = Color(0xFFF6F6F6);
-  static Color darkContainer = Colors.white.withOpacity(0.1); 
+  static Color darkContainer = Colors.white.withValues(alpha: 0.1);
 
-  // Gradient Colors 
+  // Gradient Colors
   static const Gradient linearGradient = LinearGradient(
     begin: Alignment(0.0, 0.0),
     end: Alignment(0.707, -0.707),
-    colors: [
-      Color(0xffff9a9e),
-      Color(0xfffad0c4),
-      Color(0xfffad0c4),
-    ],
+    colors: [Color(0xffff9a9e), Color(0xfffad0c4), Color(0xfffad0c4)],
   );
-
 
   // Neutral shades used in borders, dividers, and disabled states.
   static const Color grey = Color(0xFFE0E0E0);
   static const Color darkerGrey = Color(0xFF939393);
-  
 }

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:flutter_firebase_ecommerce_app/common/styles/spacing_styles.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/text_strings.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/helpers/helpers_functions.dart';
 
 class SuccessScreen extends StatelessWidget {
-  const SuccessScreen({super.key, required this.image, required this.title, required this.subtitle, required this.onPressed});
+  const SuccessScreen({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+  });
 
   final String image, title, subtitle;
   final VoidCallback onPressed;
@@ -18,10 +25,16 @@ class SuccessScreen extends StatelessWidget {
           padding: TSpacingStyle.PaddingWithAppBarHeight * 2,
           child: Column(
             children: [
-              Image(
-                image: AssetImage(image),
-                width: THelperFunctions.screenWidth() * 0.6,
-              ),
+              if (image.toLowerCase().endsWith('.json'))
+                Lottie.asset(
+                  image,
+                  width: THelperFunctions.screenWidth() * 0.6,
+                )
+              else
+                Image(
+                  image: AssetImage(image),
+                  width: THelperFunctions.screenWidth() * 0.6,
+                ),
               const SizedBox(height: TSizes.spaceBtwSections),
 
               /// Title & SubTitle
