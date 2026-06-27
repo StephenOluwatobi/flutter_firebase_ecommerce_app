@@ -46,7 +46,7 @@ class SignupController extends GetxController {
       }
 
       final userCredential = await AuthenticationRepository.instance
-          .registerWithEmailAndPassword(
+          .loginWithEmailAndPassword(
             email.text.trim(),
             password.text.trim(),
           );

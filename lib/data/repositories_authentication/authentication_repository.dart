@@ -43,8 +43,11 @@ class AuthenticationRepository extends GetxController {
       }
     }
   }
+/*------------------------------------Eamil & password sign-IN ------------------------------*/
 
-  Future<UserCredential> registerWithEmailAndPassword(
+// [EmailAuthentication] - Login
+
+  Future<UserCredential> loginWithEmailAndPassword(
     String email,
     String password,
   ) async {
