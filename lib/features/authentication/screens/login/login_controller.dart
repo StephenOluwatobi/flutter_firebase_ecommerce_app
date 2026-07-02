@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/user/user_repository.dart';
+import 'package:flutter_firebase_ecommerce_app/features/personalization/models/user_model.dart';
+import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/user_model.dart' hide UserModel;
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,10 +12,10 @@ import 'package:flutter_firebase_ecommerce_app/utils/constants/image_strings.dar
 import 'package:flutter_firebase_ecommerce_app/utils/http/network_manager.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/popups/full_screen_loader.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/popups/loaders.dart';
+// <-- WRONG FILE
 
 class LoginController extends GetxController {
   // Variables
-
   final rememberMe = false.obs;
   final hidepassword = true.obs;
   final localStorage = GetStorage();
@@ -20,12 +25,14 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL');
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD');
-
-
+    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? '';
+    password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? '';
     super.onInit();
   }
+
+  // ==========================================================
+  // 1. EMAIL & PASSWORD LOGIN METHOD
+  // ==========================================================
   Future<void> emailAndPasswordSignIn() async {
     try {
       // Start Loading
@@ -68,6 +75,58 @@ class LoginController extends GetxController {
 
       // Redirect
       AuthenticationRepository.instance.screenRedirect();
+      
+    } catch (e) {
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+    }
+  }
+
+  // ==========================================================
+  // 2. GOOGLE SIGN-IN METHOD (Now properly separated!)
+  // ==========================================================
+  Future<void> googleSignIn() async {
+    try {
+      // Start Loading
+      TFullScreenLoader.openLoadingDialog('Logging you in...', TImages.LottieAnimation2);
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Google Authentication
+      final userCredentials = await AuthenticationRepository.instance.signInWithGoogle();
+      
+      // If user cancels the sign-in pop-up, stop loading and return
+      if (userCredentials == null) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Save user record to Firestore (We only save if it's a new user, or update existing)
+      final userRepository = Get.put(UserRepository());
+      
+      final newUser = UserModel(
+        id: userCredentials.user!.uid,
+        firstName: userCredentials.user!.displayName?.split(' ').first ?? '',
+        lastName: userCredentials.user!.displayName?.split(' ').last ?? '',
+        username: userCredentials.user!.email?.split('@').first ?? '',
+        email: userCredentials.user!.email ?? '',
+        phoneNumber: userCredentials.user!.phoneNumber ?? '',
+        profilePicture: userCredentials.user!.photoURL ?? '',
+      );
+
+      await userRepository.saveUserRecord(newUser);
+
+      // Stop Loading
+      TFullScreenLoader.stopLoading();
+
+      // Redirect to Home Menu
+      AuthenticationRepository.instance.screenRedirect();
+
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());

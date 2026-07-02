@@ -10,12 +10,18 @@ import 'package:flutter_firebase_ecommerce_app/utils/exceptions/platform_excepti
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
   final deviceStorage = GetStorage();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // ==========================================
+  // ADDED: Get Authenticated User Data
+  // ==========================================
+  User? get authUser => _auth.currentUser;
 
   @override
   void onReady() {
@@ -43,11 +49,11 @@ class AuthenticationRepository extends GetxController {
       }
     }
   }
-/*------------------------------------Eamil & password sign-IN ------------------------------*/
 
-// [EmailAuthentication] - Login
+  /*------------------------------------ Email & Password Authentication ------------------------------*/
 
-  Future<UserCredential> loginWithEmailAndPassword(
+  /// [EmailAuthentication] - REGISTER
+  Future<UserCredential> registerWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -67,8 +73,52 @@ class AuthenticationRepository extends GetxController {
     } catch (_) {
       throw 'Something went wrong. Please try again';
     }
+    
+  }
+/// [ReAuthenticate] - RE-AUTHENTICATE USER
+  Future<void> reAuthenticateWithEmailAndPassword(String email, String password) async {
+    try {
+      // Create credentials
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+      
+      // ReAuthenticate
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException().message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (_) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+  /// [EmailAuthentication] - LOGIN
+  Future<UserCredential> loginWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException().message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (_) {
+      throw 'Something went wrong. Please try again';
+    }
   }
 
+  /// [EmailVerification] - SEND EMAIL
   Future<void> sendEmailVerification() async {
     try {
       await _auth.currentUser?.sendEmailVerification();
@@ -85,10 +135,49 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  /// [GoogleAuthentication] - GOOGLE
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      final googleSignIn = GoogleSignIn.instance;
+      await googleSignIn.initialize();
+
+      final GoogleSignInAccount? googleUser = await googleSignIn
+          .authenticate();
+      if (googleUser == null) return null;
+
+      // idToken still comes from .authentication (now synchronous, no await needed)
+      final String? idToken = googleUser.authentication.idToken;
+
+      // accessToken now comes from the authorization client
+      const scopes = ['email', 'profile'];
+      final authorization = await googleUser.authorizationClient
+          .authorizeScopes(scopes);
+      final String accessToken = authorization.accessToken;
+
+      if (idToken == null) {
+        throw 'Google authentication failed: Missing idToken.';
+      }
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: accessToken,
+        idToken: idToken,
+      );
+
+      return await _auth.signInWithCredential(credential);
+    } catch (e) {
+      if (e.toString().toLowerCase().contains('canceled')) {
+        return null;
+      }
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  /// [Logout] - SIGN OUT
   Future<void> logout() async {
     try {
       await _auth.signOut();
       await deviceStorage.erase();
+      await screenRedirect();
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -101,4 +190,20 @@ class AuthenticationRepository extends GetxController {
       throw 'Something went wrong. Please try again';
     }
   }
+
+  /// [PasswordReset] - SEND RESET EMAIL
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (_) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+  
 }

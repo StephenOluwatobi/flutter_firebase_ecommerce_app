@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/formatters/formatters.dart';
 
 class UserModel {
-  final String id;
+  String id;
   String firstName;
   String lastName;
-  final String username;
-  final String email;
+  String username;
+  String email;
   String phoneNumber;
   String profilePicture;
 

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ecommerce_app/features/authentication/screens/signup/password_configuration/reset_password.dart';
+import 'package:flutter_firebase_ecommerce_app/features/authentication/controllers/forget_password_controller.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/text_strings.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:flutter_firebase_ecommerce_app/utils/validators/validation.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // 1. Initialize the Controller
+    final controller = Get.put(ForgetPasswordController());
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -30,11 +33,18 @@ class ForgetPassword extends StatelessWidget {
             ),
             const SizedBox(height: TSizes.spaceBtwSections * 2),
 
-            /// Text Field
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: TTexts.email,
-                prefixIcon: Icon(Iconsax.direct_right),
+            /// 2. Wrap Text Field in a Form
+            Form(
+              key: controller.forgetPasswordFormKey,
+              child: TextFormField(
+                // 3. Connect the email text field to the controller!
+                controller: controller.email,
+                validator:
+                    TValidator.validateEmail, // Validates the format
+                decoration: const InputDecoration(
+                  labelText: TTexts.email,
+                  prefixIcon: Icon(Iconsax.direct_right),
+                ),
               ),
             ),
             const SizedBox(height: TSizes.spaceBtwSections),
@@ -43,7 +53,8 @@ class ForgetPassword extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => Get.to(() => const ResetPassword()),
+                // 4. Trigger the backend logic instead of just jumping screens
+                onPressed: () => controller.sendPasswordResetEmail(),
                 child: const Text(TTexts.submit),
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_ecommerce_app/SettingsController.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/appbar/appbar.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/list_tiles/setting_menu_tile.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_firebase_ecommerce_app/features/shop/screens/order/order
 import 'package:flutter_firebase_ecommerce_app/utils/constants/colors.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -18,6 +20,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SettingsController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -153,7 +157,19 @@ class SettingsScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // <-- Add this opening bracket and parenthesis
+                        Get.defaultDialog(
+                          title: 'Logout',
+                          middleText:
+                              'Are you sure you want to logout?',
+                          onConfirm: () {
+                            controller.logout();
+                            Get.back(); // Close the dialog
+                          },
+                          onCancel: () => Get.back(),
+                        );
+                      }, // <-- Add this closing bracket
                       child: const Text('Logout'),
                     ),
                   ),
