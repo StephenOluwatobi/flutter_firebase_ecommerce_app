@@ -22,7 +22,7 @@ class TUserProfileTile extends StatelessWidget {
         image: TImages.user,
         width: 50,
         height: 50,
-        padding: 0,
+        padding: 0, applyImageRadius: true,
       ),
       title: Text(controller.user.value.fullName, style: Theme.of(context).textTheme.headlineSmall!.apply(color:TColors.white)),
       subtitle: Text(controller.user.value.email, style: Theme.of(context).textTheme.bodyMedium!.apply(color:TColors.white),),

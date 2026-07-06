@@ -4,6 +4,7 @@ import 'package:flutter_firebase_ecommerce_app/common/widgets/custom_shapes/cont
 import 'package:flutter_firebase_ecommerce_app/common/widgets/layouts/grid_layout.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/products/product_cards/product_card_vertical.dart';
 import 'package:flutter_firebase_ecommerce_app/common/widgets/texts/section_heading.dart';
+import 'package:flutter_firebase_ecommerce_app/features/shop/models/product_model.dart';
 import 'package:flutter_firebase_ecommerce_app/features/shop/screens/aii_products/aii_product.dart';
 import 'package:flutter_firebase_ecommerce_app/features/shop/screens/home/widgets/Promo_slider.dart';
 import 'package:flutter_firebase_ecommerce_app/features/shop/screens/home/widgets/home_appbar.dart';
@@ -69,27 +70,9 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TPromoSlider(
-                    banners: [
-                      /// -- Promo Slider
-                      TImages.promoBanner1,
-                      TImages.promoBanner2,
-                      TImages.promoBanner3,
-                      TImages.promoBanner4,
-                      TImages.promoBanner5,
-                      TImages.promoBanner6,
-                      TImages.promoBanner7,
-                      TImages.promoBanner8,
-                    ],
-                  ),
+                  TPromoSlider(),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
-                  /// -- Heading
-                  TSectionHeading(
-                    title: 'Popular Products',
-                    onPressed: () =>
-                        Get.to(() => const AllProducts()),
-                  ),
                   const SizedBox(height: TSizes.spaceBtwItems),
 
                   /// -- Popular Products
@@ -100,8 +83,9 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: TSizes.spaceBtwItems),
                   TGridLayout(
                     itemCount: 3,
-                    itemBuilder: (_, index) =>
-                        const TProductCardVertical(),
+                    itemBuilder: (_, index) => TProductCardVertical(
+                      product: ProductModel.empty(),
+                    ),
                   ),
                 ],
               ),

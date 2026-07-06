@@ -6,10 +6,12 @@ import 'package:flutter_firebase_ecommerce_app/features/authentication/re_auth_u
 import 'package:flutter_firebase_ecommerce_app/features/personalization/models/user_model.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/image_strings.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
+import 'package:flutter_firebase_ecommerce_app/utils/helpers/cloudinary_service.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/http/network_manager.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/popups/full_screen_loader.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/popups/loaders.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserController extends GetxController {
   static UserController get instance => Get.find();
@@ -21,7 +23,9 @@ class UserController extends GetxController {
   final verifyEmail = TextEditingController();
   final verifyPassword = TextEditingController();
   final userRepository = Get.put(UserRepository());
+  final cloudinaryService = CloudinaryService();
   GlobalKey<FormState> reAuthFormKey = GlobalKey<FormState>();
+
 
   @override
   void onInit() {
@@ -41,6 +45,38 @@ class UserController extends GetxController {
       profileLoading.value = false;
     }
   }
+
+  Future<void> uploadUserProfilePicture() async {
+  try {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery, 
+      imageQuality: 70, 
+      maxHeight: 512, 
+      maxWidth: 512
+    );
+    
+    if (image != null) {
+      TFullScreenLoader.openLoadingDialog('Uploading...', TImages.LottieAnimation1);
+
+      // CALL YOUR NEW SERVICE METHOD HERE
+      final imageUrl = await CloudinaryService.uploadFile(image.path);
+
+      if (imageUrl != null) {
+        Map<String, dynamic> json = {'ProfilePicture': imageUrl};
+        await userRepository.updateSingleField(json);
+
+        user.value.profilePicture = imageUrl;
+        user.refresh();
+      }
+      
+      TFullScreenLoader.stopLoading();
+      TLoaders.successSnackBar(title: 'Success', message: 'Profile picture updated.');
+    }
+  } catch (e) {
+    TFullScreenLoader.stopLoading();
+    TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+  }
+}
 
   /// Save user Record from any Registration provider
   Future<void> saveUserRecord(UserCredential? userCredential) async {
