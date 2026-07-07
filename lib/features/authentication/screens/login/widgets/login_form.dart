@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_ecommerce_app/features/authentication/screens/login/login_controller.dart';
 import 'package:flutter_firebase_ecommerce_app/features/authentication/screens/signup/password_configuration/forget_password.dart';
 import 'package:flutter_firebase_ecommerce_app/features/authentication/screens/signup/signup.dart';
-import 'package:flutter_firebase_ecommerce_app/navigation_menu.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/text_strings.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/validators/validation.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 
 class TLoginForm extends StatelessWidget {

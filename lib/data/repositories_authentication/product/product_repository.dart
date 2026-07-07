@@ -10,15 +10,35 @@ class ProductRepository extends GetxController {
   
   final _db = FirebaseFirestore.instance;
 
+  /// --- Fetch Featured Products based on isFeatured flag ---
+  Future<List<ProductModel>> getFeaturedProducts() async {
+    try {
+      final snapshot = await _db
+          .collection('Products')
+          .where('isFeatured', isEqualTo: true) // Matches the boolean flag in your DB
+          .limit(4)                             // Limits to 4 for the Home Screen Grid
+          .get();
+      
+      return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
+    } on FirebaseException catch (e) {
+      throw e.message ?? 'A Firebase error occurred.';
+    } catch (e) {
+      throw 'Error fetching featured products: $e';
+    }
+  }
+
   /// Fetch products based on category
   Future<List<ProductModel>> getProductsForCategory(String categoryId) async {
     try {
-      final snapshot = await _db.collection('Products')
+      final snapshot = await _db
+          .collection('Products')
           .where('CategoryId', isEqualTo: categoryId)
           .limit(4) // Limiting for the "You Might Like" section
           .get();
       
       return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
+    } on FirebaseException catch (e) {
+      throw e.message ?? 'A Firebase error occurred.';
     } catch (e) {
       throw 'Error fetching products: $e';
     }
@@ -27,7 +47,7 @@ class ProductRepository extends GetxController {
   /// Upload Dummy Products to Cloudinary and Cloud Firestore
   Future<void> uploadProductDummyData(List<ProductModel> products) async {
     try {
-      // 1. Start Loader (Pass your Lottie animation string if needed, or leave empty)
+      // 1. Start Loader
       TFullScreenLoader.openLoadingDialog('Uploading Products to Cloud...', '');
 
       // 2. Loop through all products
@@ -49,6 +69,7 @@ class ProductRepository extends GetxController {
             'CategoryId': product.categoryId,
             'Brand': product.brandName,
             'Description': product.description,
+            'isFeatured': true, // Essential so the query above actually finds them!
           });
         } else {
           print('Failed to upload image for product: ${product.title}');

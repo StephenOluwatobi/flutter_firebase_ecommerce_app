@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/category/category_repository.dart';
 import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/product/product_repository.dart';
 import 'package:flutter_firebase_ecommerce_app/features/personalization/ChangeUsername.dart';
 import 'package:flutter_firebase_ecommerce_app/features/personalization/change_name.dart';
 import 'package:flutter_firebase_ecommerce_app/features/personalization/change_phone_number.dart';
-import 'package:flutter_firebase_ecommerce_app/utils/constants/dummy_data.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/product_dummy_data.dart';
 import 'package:get/get.dart'; // Import GetX
 import 'package:flutter_firebase_ecommerce_app/common/widgets/appbar/appbar.dart';
@@ -149,19 +147,6 @@ class ProfileScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  // 1. Get.put() loads the repository into memory first
-                  final productRepo = Get.put(ProductRepository());
-
-                  // 2. Now that it is in memory, we can safely call the upload function!
-                  productRepo.uploadProductDummyData(
-                    TProductDummyData.products,
-                  );
-                },
-                child: const Text('UPLOAD DUMMY PRODUCTS'),
               ),
             ],
           ),

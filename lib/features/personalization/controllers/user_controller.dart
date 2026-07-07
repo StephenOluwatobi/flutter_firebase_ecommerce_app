@@ -38,7 +38,7 @@ class UserController extends GetxController {
     try {
       profileLoading.value = true;
       final userDetails = await userRepository.fetchUserDetails();
-      this.user(userDetails);
+      user(userDetails);
     } catch (e) {
       user(UserModel.empty());
     } finally {

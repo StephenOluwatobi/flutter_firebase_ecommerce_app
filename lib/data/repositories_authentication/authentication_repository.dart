@@ -141,9 +141,8 @@ class AuthenticationRepository extends GetxController {
       final googleSignIn = GoogleSignIn.instance;
       await googleSignIn.initialize();
 
-      final GoogleSignInAccount? googleUser = await googleSignIn
+      final GoogleSignInAccount googleUser = await googleSignIn
           .authenticate();
-      if (googleUser == null) return null;
 
       // idToken still comes from .authentication (now synchronous, no await needed)
       final String? idToken = googleUser.authentication.idToken;

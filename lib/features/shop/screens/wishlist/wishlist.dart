@@ -5,6 +5,7 @@ import 'package:flutter_firebase_ecommerce_app/common/widgets/layouts/grid_layou
 import 'package:flutter_firebase_ecommerce_app/common/widgets/products/product_cards/product_card_vertical.dart';
 import 'package:flutter_firebase_ecommerce_app/features/shop/models/product_model.dart';
 import 'package:flutter_firebase_ecommerce_app/features/shop/screens/home/home.dart';
+import 'package:flutter_firebase_ecommerce_app/utils/constants/image_strings.dart';
 import 'package:flutter_firebase_ecommerce_app/utils/constants/sizes.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -36,7 +37,17 @@ class WishlistScreen extends StatelessWidget {
               TGridLayout(
                 itemCount: 4,
                 itemBuilder: (_, index) => TProductCardVertical(
-                  product: ProductModel.empty(),
+                  // Injecting the dummy product here so the UI looks complete
+                  product: ProductModel(
+                    id: 'dummy_$index',
+                    title: 'Wishlist Item',
+                    price: 99.9,
+                    thumbnail: TImages.productImage45,
+                    categoryId: '1',
+                    brandName: 'Nike',
+                    description: 'Dummy description',
+                    isFeatured: false,
+                  ),
                 ),
               ),
             ],

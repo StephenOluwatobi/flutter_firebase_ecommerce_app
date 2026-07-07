@@ -45,12 +45,12 @@ class TRoundedImage extends StatelessWidget {
           borderRadius: applyImageRadius
               ? BorderRadius.circular(borderRadius)
               : BorderRadius.zero,
-          child: Image(
-            fit: fit,
-            image: isNetworkImage
-                ? NetworkImage(imageUrl)
-                : AssetImage(imageUrl) as ImageProvider,
-          ),
+          // --- THE FIX IS HERE ---
+          child: imageUrl.isEmpty
+              ? const SizedBox() // Safety net: if the URL is empty, render an empty box instead of crashing
+              : isNetworkImage
+                  ? Image.network(imageUrl, fit: fit) // Explicitly use the network fetcher
+                  : Image.asset(imageUrl, fit: fit),  // Explicitly use the local asset fetcher
         ),
       ),
     );

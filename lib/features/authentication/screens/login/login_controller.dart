@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/user/user_repository.dart';
 import 'package:flutter_firebase_ecommerce_app/features/personalization/models/user_model.dart';
-import 'package:flutter_firebase_ecommerce_app/data/repositories_authentication/user_model.dart' hide UserModel;
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
